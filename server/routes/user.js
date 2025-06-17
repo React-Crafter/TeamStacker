@@ -146,7 +146,7 @@ router.post('/login', async (req, res) => {
             const isMatch = await bcrypt.compare(password, teamOwner[0].password);
             if (isMatch) {
                 // Generate a JWT token
-                const token = jwt.sign({userId: teamOwner[0]._id, role: 'TeamOwner'}, process.env.JWT_SECRET, { expiresIn: '1h' });
+                const token = jwt.sign({userId: teamOwner[0]._id, role: 'teamOwner'}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
                 // Return the token
                 return res.status(200).json({

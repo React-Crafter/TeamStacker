@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const userRoute = require("./routes/user");
-const checkLogin = require("./middlewares/checkLogin");
 const teamRoute = require("./routes/team");
 
 // Configation
@@ -33,7 +32,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.use("/user", userRoute);
-app.use("/team", checkLogin, teamRoute);
+app.use("/team", teamRoute);
 
 // Start the server
 app.listen(PORT, () => {
