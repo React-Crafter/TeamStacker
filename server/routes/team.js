@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Team = require('../models/team');
 const TeamOwner = require('../models/teamOwner');
+const crypto = require('crypto');
+const InviteToken = require('../models/InviteToken')
 const checkLogin = require('../middlewares/checkLogin')// Assuming you have a middleware to check login
 
 // Create a new team
@@ -49,6 +51,42 @@ router.post('/create', checkLogin, async (req, res) => {
         }
     } catch (error) {
         console.error('Error creating team:', error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
+
+// create a team member invite link
+router.post('/generate-invite/:teamId', async (req, res) => {
+    try {
+        const { teamId } = req.params;
+
+        // validation
+        const chekTeamId = await Team.findOne({ _id: teamId });
+
+        if (!chekTeamId) {
+            return res.status(401).json({
+                message: "invalid team Id"
+            });
+        }
+
+        // cteate invite token
+        const token = crypto.randomBytes(20).toString('hex');
+        const FRONTEND_URL = process.env.FRONTEND_URL
+        const invite = new InviteToken({token, teamId});
+        await invite.save();
+
+        if (invite) {
+            return res.status(201).json({
+                message: 'invite link created sucessfully',
+                inviteLink: `${FRONTEND_URL}/join-team/${token}`
+            });
+        } else {
+            return res.status(500).json({
+                message: 'invite Token is not created sucessfully!'
+            })
+        }
+    } catch (error) {
+        console.error('Error createing member invite link:', error);
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
