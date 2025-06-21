@@ -94,7 +94,7 @@ router.post('/generate-invite/:teamId', checkLogin, async (req, res) => {
 // join a member to a team using invite link
 router.post('/join-team/:token', checkLogin, async (req, res) => {
     try {
-        if (req.role === 'Applicant' || req.role === 'Member') {
+        if (req.role === 'ApplicantOrMember' || req.role === 'Member') {
             const { token } = req.params;
 
             // Find the invite token
@@ -109,12 +109,12 @@ router.post('/join-team/:token', checkLogin, async (req, res) => {
             };
 
             // Check if the user is already a member of the team
-            if (team.members.includes(req.userId)) {
+            if (team.teamMembers.includes(req.userId)) {
                 return res.status(400).json({ message: 'You are already a member of this team' });
             }
 
             // Add the user to the team members
-            team.members.push(req.userId);
+            team.teamMembers.push(req.userId);
             await team.save();
             await InviteToken.findByIdAndDelete(inviteToken[0]._id); // Delete the invite token after use
             return res.status(200).json({

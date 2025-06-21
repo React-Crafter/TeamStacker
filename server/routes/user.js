@@ -69,7 +69,7 @@ router.post('/signup', async (req, res) => {
                 password,
                 profilePicture,
                 country,
-                status = 'Applicant', // Default status is 'Applicant'
+                role = 'Applicant', // Default status is 'Applicant'
                 memberOf = null, // Default memberOf is null
                 skills,
                 contactLinks,
@@ -104,7 +104,7 @@ router.post('/signup', async (req, res) => {
                     password: hashedPassword,
                     profilePicture,
                     country,
-                    status,
+                    role,
                     memberOf,
                     skills,
                     contactLinks,
