@@ -56,7 +56,7 @@ router.post('/create', checkLogin, async (req, res) => {
 });
 
 // create a team member invite link
-router.post('/generate-invite/:teamId', async (req, res) => {
+router.post('/generate-invite/:teamId', checkLogin, async (req, res) => {
     try {
         const { teamId } = req.params;
 
@@ -90,6 +90,46 @@ router.post('/generate-invite/:teamId', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
+
+// join a member to a team using invite link
+router.post('/join-team/:token', checkLogin, async (req, res) => {
+    try {
+        if (req.role === 'Applicant' || req.role === 'Member') {
+            const { token } = req.params;
+
+            // Find the invite token
+            const inviteToken = await InviteToken.find({ token });
+            if (inviteToken.length === 0) {
+                return res.status(404).json({ message: 'Invalid or expired invite token' });
+            };
+
+            const team = await Team.findById(inviteToken[0].teamId);
+            if (!team) {
+                return res.status(404).json({ message: 'Team not found' });
+            };
+
+            // Check if the user is already a member of the team
+            if (team.members.includes(req.userId)) {
+                return res.status(400).json({ message: 'You are already a member of this team' });
+            }
+
+            // Add the user to the team members
+            team.members.push(req.userId);
+            await team.save();
+            await InviteToken.findByIdAndDelete(inviteToken[0]._id); // Delete the invite token after use
+            return res.status(200).json({
+                message: 'Successfully joined the team',
+                teamId: team._id,
+                teamName: team.teamName
+            });
+        } else {
+            return res.status(403).json({ message: 'Forbidden: Only applicants or members can join teams', role: req.role });
+        }
+    } catch (error) {
+        console.error('Error joining team:', error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+})
 
 // export the router
 module.exports = router;
