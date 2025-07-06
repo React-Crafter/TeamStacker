@@ -146,7 +146,7 @@ router.post('/login', async (req, res) => {
             const isMatch = await bcrypt.compare(password, teamOwner[0].password);
             if (isMatch) {
                 // Generate a JWT token
-                const token = jwt.sign({userId: teamOwner[0]._id, role: 'teamOwner'}, process.env.JWT_SECRET, { expiresIn: '1h' });
+                const token = jwt.sign({userId: teamOwner[0]._id, role: teamOwner[0].role}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
                 // Return the token
                 return res.status(200).json({
@@ -164,7 +164,7 @@ router.post('/login', async (req, res) => {
             const isMatch = await bcrypt.compare(password, applicantOrMember[0].password);
             if (isMatch) {
                 // Generate a JWT token
-                const token = jwt.sign({userId: applicantOrMember[0]._id, role: 'ApplicantOrMember'}, process.env.JWT_SECRET, { expiresIn: '1h' });
+                const token = jwt.sign({userId: applicantOrMember[0]._id, role: applicantOrMember[0].role}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
                 // Return the token
                 return res.status(200).json({

@@ -34,15 +34,15 @@ const teamOwnerSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
-        unique: true,
+        required: [true, "email is required"],
+        unique: [true, "This email is alredy used, please give a unique email."],
         lowercase: true,
         trim: true,
         match: [/\S+@\S+\.\S+/, 'Please provide a valid email address']
     },
     password: {
         type: String,
-        required: true,
+        required: [true, "password is required"],
         minlength: [6, 'Password must be at least 6 characters long']
     },
 }, {
