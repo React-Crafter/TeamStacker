@@ -1,68 +1,94 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*{
+    padding: 0;
+    margin: 0;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+.header {
+    width: 100%;
+    height: 70px;
+    background-color: #ebebeb;
+    box-shadow: 10jpx 0px 25px rgba(0, 0, 0, 0.5);
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.header .nav {
+    display: flex;
+    width: 100%;
+    height: 70px;
+    justify-content: space-around;
+    align-items: center;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.header .nav .logoAria {
+    width: 10%;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.header .nav .itemAria {
+    width: 70%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.header .nav .itemAria .navItems {
+    width: 45%;
+    list-style: none;
+    margin-top: 8px;
+}
+
+.header .nav .itemAria .navItems li {
+    text-decoration: none;
+    float: left;
+    
+    margin-left: 30px;
+}
+
+.header .nav .itemAria .navItems li a {
+    text-decoration: none;
+    color: rgb(14, 84, 150);
+
+}
+
+.header .nav .itemAria .searchbtnAria {
+    width: 55%;
+    display: flex;
+    margin-top: 5px;
+    justify-content: space-between;
+}
+
+.header .nav .itemAria .searchbtnAria .searchAria input {
+    width: 300px;
+    height: 35px;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.header .nav .itemAria .searchbtnAria .btnAria .signupBtn {
+    border: none;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 12px;
+    border-radius: 10px;
+    background-color: #001aff;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.header .nav .itemAria .searchbtnAria .btnAria {
+    margin-top: -4px;
+}
+
+.header .nav .itemAria .searchbtnAria .btnAria .LoginBtn {
+    border: 1px solid #001aff;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 12px;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
 }
