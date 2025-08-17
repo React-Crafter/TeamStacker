@@ -64,3 +64,58 @@ router.get("/:teamId", checkLogin, async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 });
+
+// Update a task
+router.put("/:taskId", checkLogin, async (req, res) => {
+    try {
+        const { taskId } = req.params;
+        const updates = req.body;
+
+        // Check if the user is the creator of the task or a team owner
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        const teamOwner = await mongoose.model("TeamOwners").findOne({ ownerOf: task.teamId, _id: req.userId });
+        if (task.createdBy.toString() !== req.userId && !teamOwner) {
+            return res.status(403).json({ message: "Forbidden: You are not authorized to update this task" });
+        }
+
+        // Update the task
+        Object.assign(task, updates);
+        await task.save();
+        return res.status(200).json({
+            message: "Task updated successfully",
+            task
+        });
+    } catch (error) {
+        console.error("Error updating task:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+});
+
+// Delete a task
+router.delete("/:taskId", checkLogin, async (req, res) => {
+    try {
+        const { taskId } = req.params;
+
+        // Check if the user is the creator of the task or a team owner
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        const teamOwner = await mongoose.model("TeamOwners").findOne({ ownerOf: task.teamId, _id: req.userId });
+        if (task.createdBy.toString() !== req.userId && !teamOwner) {
+            return res.status(403).json({ message: "Forbidden: You are not authorized to delete this task" });
+        }
+
+        // Delete the task
+        await Task.findByIdAndDelete(taskId);
+        return res.status(200).json({ message: "Task deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting task:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+});
