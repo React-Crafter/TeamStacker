@@ -22,7 +22,7 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 // database connection (mocked for this example)
-mongoose.connect("mongodb://localhost:27017")
+mongoose.connect(dotenv.MONGODB_URI || "mongodb://localhost:27017/taskmanager")
 .then(() => {
     console.log("Connected to MongoDB");
 }) .catch(err => {

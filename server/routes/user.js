@@ -10,16 +10,16 @@ const ApplicantOrMember = require('../models/ApplicantOrMember');
 // signup
 router.post('/signup', async (req, res) => {
     try {
-        const { useFor } = req.body;
+        const { role } = req.body;
 
         // Validate useFor
-        if (!useFor || (useFor !== 'To create and manage my own team' && useFor !== 'To apply to jobs from other teams')) {
+        if (!role || (role !== 'Member' && role !== 'teamOwner')) {
             return res.status(400).json({ error: 'Invalid useFor value' });
         }
 
         // create a Team Owner account
-        if (useFor === 'To create and manage my own team') {
-            const { fullName, userName, email, password } = req.body;
+        if (role === 'teamOwner') {
+            const { fullName, userName, email, password, profilePicture } = req.body;
 
             // Validate required fields
             if (!fullName || !userName || !email || !password) {
@@ -46,7 +46,8 @@ router.post('/signup', async (req, res) => {
                     fullName,
                     userName,
                     email,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    profilePicture,
                 });
                 // Save the new user to the database
                 await newTeamOwner.save();
@@ -61,7 +62,7 @@ router.post('/signup', async (req, res) => {
         }
 
         // create a Applicant account
-        if (useFor === 'To apply to jobs from other teams') {
+        if (role === 'Member') {
             const {
                 fullName,
                 userName,
