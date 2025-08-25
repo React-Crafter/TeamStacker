@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
     teamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team", required: true },
@@ -6,7 +6,7 @@ const taskSchema = new mongoose.Schema({
     description: String,
 
     // Assigned members
-    assignedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    assignedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "ApplicantOrMember" }],
 
     // if the task is open or not
     isOpenTask: { type: Boolean, default: false },
@@ -35,4 +35,8 @@ const taskSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
-export default mongoose.model("Task", taskSchema);
+// Create the Task model
+const Task = mongoose.model("Task", taskSchema);
+
+// Export the Task model
+module.exports = Task;

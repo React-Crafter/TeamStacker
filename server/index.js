@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const userRoute = require("./routes/user");
 const teamRoute = require("./routes/team");
+const taskRoute = require("./routes/task");
 
 // Configation
 dotenv.config();
@@ -22,9 +23,9 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 // database connection (mocked for this example)
-mongoose.connect(dotenv.MONGODB_URI || "mongodb://localhost:27017/taskmanager")
+mongoose.connect(process.env.MONGO_URI)
 .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("Connected to MongoDB...");
 }) .catch(err => {
     console.error("MongoDB connection error:", err);
 });
@@ -33,6 +34,7 @@ mongoose.connect(dotenv.MONGODB_URI || "mongodb://localhost:27017/taskmanager")
 // Routes
 app.use("/user", userRoute);
 app.use("/team", teamRoute);
+app.use("/task", taskRoute);
 
 // Start the server
 app.listen(PORT, () => {
