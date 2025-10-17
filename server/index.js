@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const userRoute = require("./routes/user");
 const teamRoute = require("./routes/team");
 const taskRoute = require("./routes/task");
+const jobRoute = require('./routes/jobs');
 
 // Configation
 dotenv.config();
@@ -23,7 +24,7 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 // database connection (mocked for this example)
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect("mongodb://localhost:27017/")
 .then(() => {
     console.log("Connected to MongoDB...");
 }) .catch(err => {
@@ -35,6 +36,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/user", userRoute);
 app.use("/team", teamRoute);
 app.use("/task", taskRoute);
+app.use("/job", jobRoute);
 
 // Start the server
 app.listen(PORT, () => {
